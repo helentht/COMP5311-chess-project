@@ -1,0 +1,52 @@
+extends layout
+
+block content
+
+  #banner.jumbotron
+    .container
+      h2  Chess Game with Chat Room
+  .container
+    .row
+      .col-sm-6
+        h2 Start a New Game
+        form#startForm(action="/start", method="POST", role="form")
+          .form-group
+            label Play as
+            div
+              .btn-group(data-toggle="buttons")
+                label.btn.btn-default.active
+                  input(type="radio", name="player-color", value="white", checked="checked")
+                  | White
+                label.btn.btn-default
+                  input(type="radio", name="player-color", value="black")
+                  | Black
+          .form-group
+            label(for="playerName") Player Name
+            input#playerName.form-control(type="text", name="player-name", placeholder="Player Name", required=)
+          .form-group
+            label(for="roomName") Room Name
+            input#playerName.form-control(type="text", name="roomName", placeholder="Room Name", required=)
+          button.btn.btn-primary(type="submit") Start Game
+      .col-sm-6
+        h2 Join an Existing Game
+        form#joinForm(action="/join", method="POST", role="form")
+
+          script
+            var roomInfo = !{JSON.stringify(roomInfo)};
+
+          .form-group
+            label Room name
+            select#room(name='game-id').form-control
+              if roomInfo
+              each value, roomId in roomInfo
+                option(value='#{roomId}') #{value.name}
+              else
+                option(value='')  No room available 
+
+          .form-group
+            label(for="playerName") Player Name
+            input#playerName.form-control(type="text", name="player-name", placeholder="Player Name", required=)
+          button.btn.btn-primary(type="submit") Join Game
+
+  script(src="/js/jquery.min.js")
+  script(src="/js/bootstrap.min.js")
